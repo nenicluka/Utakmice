@@ -13,7 +13,11 @@ export const typeOrmConfig: DataSourceOptions = {
     port: 5434,
     username: "postgres",
     password: "123",
+    logging: true,
     entities: [User, Igrac, Moderator, Organizator, Tim, Turnir, Prijava],
     synchronize: true,
-    database: "utakmice"
+    database: "utakmice",
+
+    
 }
+
