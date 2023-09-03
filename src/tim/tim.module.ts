@@ -4,6 +4,8 @@ import { TimService } from './tim.service';
 
 @Module({
   controllers: [TimController],
-  providers: [TimService]
+  providers: [TimService],
+  exports: [TimService]
+
 })
 export class TimModule {}

@@ -1,7 +1,7 @@
 enum TypeOfUser {
     Igrac = "IGRAC",
     Moderator = "MODERATOR",
-    Organizator ="ORANIZATOR"
+    Organizator ="ORGANIZATOR"
 }
 
 export default TypeOfUser

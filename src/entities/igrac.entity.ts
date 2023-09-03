@@ -7,13 +7,13 @@ import { Tim } from "./tim.entity";
 @Entity()
 export class Igrac extends User {
 
-    @Column({ type: "integer", default: 0 })
-    godine: number
+    // @Column({ type: "integer", default: 0 })
+    // godine: number
 
-    @Column()
-    @IsString()
-    @Length(1, 30)
-    grad: string
+    // @Column()
+    // @IsString()
+    // @Length(1, 30)
+    // grad: string
 
     @ManyToOne(() => Tim, (tim) => tim.igrac)
     tim: Tim

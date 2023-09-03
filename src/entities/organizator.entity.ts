@@ -7,15 +7,15 @@ import { Turnir } from "./turnir.entity";
 @Entity()
 export class Organizator extends User {
 
-    @Column()
-    @IsString()
-    @Length(50, 2000)
-    biografija: string
+    // @Column()
+    // @IsString()
+    // @Length(50, 2000)
+    // biografija: string
 
-    @Column()
-    @IsString()
-    @Length(1, 30)
-    grad: string
+    // @Column()
+    // @IsString()
+    // @Length(1, 30)
+    // grad: string
 
     @OneToMany(() => Turnir, (turnir) => turnir.organizator)
     turnir: Turnir[]
