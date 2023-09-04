@@ -5,6 +5,7 @@ import { Turnir } from "./turnir.entity";
 
 @Entity()
 export class Tim {
+    [x: string]: any;
     @PrimaryGeneratedColumn()
     id: number
 
