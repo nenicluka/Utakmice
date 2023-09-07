@@ -17,7 +17,8 @@ export class Organizator extends User {
     // @Length(1, 30)
     // grad: string
 
-    @OneToMany(() => Turnir, (turnir) => turnir.organizator)
+    @ManyToMany(() => Turnir, (turnir) => turnir.organizator)
+    @JoinTable({ name: "organizator_turnir" })
     turnir: Turnir[]
 
 

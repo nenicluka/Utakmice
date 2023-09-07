@@ -40,8 +40,8 @@ export class Turnir {
     @Column({ type: "integer", default: 0 })
     brojTimova: number
 
-    @ManyToOne(() => Organizator, (organizator) => organizator.turnir)
-    organizator: Organizator
+    @ManyToMany(() => Organizator, (organizator) => organizator.turnir)
+    organizator: Organizator[]
 
     @ManyToMany(() => Tim, tim => tim.turnir)
     tim: Tim[]
