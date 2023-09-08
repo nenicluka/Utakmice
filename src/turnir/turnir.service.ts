@@ -123,6 +123,7 @@ export class TurnirService {
                 tim.turnir.push(noviTurnir)
             })
             await this.timRepository.save(tim)
+            await this.turnirRepository.save(noviTurnir)
             await this.organizatorRepository.save(organizator)
         }
         catch (err) {
@@ -147,87 +148,49 @@ export class TurnirService {
 
     async delete(id: number) {
         try {
-            const tim = await this.timRepository.findOne({
+            const turnir = await this.turnirRepository.findOne({
                 where: {
                     id
                 },
                 relations: {
-                    igrac: true,
-                    turnir: true
+                    organizator: true,
+                    tim: true
                 },
                 select: {
                     id: true,
                     naziv: true,
                     mesto: true,
-                    brojIgraca:true,
-                    igrac: {
+                    organizator: {
                         id: true
                     },
-                    turnir: {
+                    tim: {
                         id: true
                     }
                 }
             })
-            if (!tim) throw new NotFoundException("Tim sa datim id ne postoji")
+            if (!turnir) throw new NotFoundException("Turnir sa datim id ne postoji")
 
             // sad mozda sam mogao i gore da ga pokupim preko veza, al mislim da je ovako citljivije
-            const turnirTim = await this.turnirRepository.find({
+            const timTurniri = await this.timRepository.find({
                 where: {
-                    tim: {
+                    turnir: {
                         id
                     }
                 },
                 relations: {
-                    tim: true
+                    turnir: true
                 }
             })
 
             // u svakom turniru u njegovoj listi timova koje poseduje, filtriramo turnir koji brisemo
-            for (const turnir of turnirTim) {
-                turnir.tim = turnir.tim.filter(turnirTim => turnirTim.id !== id)
-                await this.turnirRepository.save(turnir)
+            for (const tim of timTurniri) {
+                tim.turnir = tim.turnir.filter(turnirTim => turnirTim.id !== id)
+                await this.timRepository.save(tim)
             }
 
-            // // brisemo iz veze vise na vise, pa onda obrisemo knjigu
-            await this.turnirRepository.delete({
-                tim: {
-                    id
-                }
-            })
 
-            // if (tim.igrac.length) {
-            //     const igraci = await this.igracRepository.find({
-            //         where: {
-            //             id: In(Array(tim.igrac.length).fill(0).map((_, i) => tim.igrac[i].id))
-            //         },
-            //         relations: {
-            //             tim: true
-            //         },
-            //         select: {
-            //             id: true,
-            //             ime: true,
-            //             prezime: true,
-            //             tim: {
-            //                 id: true
-            //             }
-            //         }
-            //     })
 
-            //     for (const igrac of igraci) {
-            //         igrac.tim = igrac.tim.filter(igracTim => igracTim.id !== id)
-            //         // brisemo autora ukoliko nakon brisanja knjige nije napisao nijednu i updejtujemo
-            //         // ocenu i broj recenzija
-            //         author.rating = (author.rating * author.numberOfReviews - book.numberOfReviews * book.rating) / (author.numberOfReviews - book.numberOfReviews)
-            //         author.numberOfReviews -= book.numberOfReviews
-            //         if (!author.books.length) {
-            //             await this.authorRepository.delete(author.id)
-            //         }
-            //         else
-            //             await this.authorRepository.save(author)
-            //     }
-            // }
-
-            return await this.timRepository.delete(id)
+            return await this.turnirRepository.delete(id)
         }
         catch (err) {
             console.log(err)

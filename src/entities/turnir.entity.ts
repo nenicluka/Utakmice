@@ -43,9 +43,8 @@ export class Turnir {
     @ManyToMany(() => Organizator, (organizator) => organizator.turnir)
     organizator: Organizator[]
 
-    @ManyToMany(() => Tim, tim => tim.turnir, {
-        cascade: true
-    })
+    @ManyToMany(() => Tim, tim => tim.turnir)
+
     tim: Tim[]
 
 

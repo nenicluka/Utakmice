@@ -27,6 +27,7 @@ export class Tim {
 
     @ManyToMany(() => Turnir, turnir => turnir.tim)
     @JoinTable({ name: "turnir_tim" })
+
     turnir: Turnir[]
 
 

@@ -151,14 +151,25 @@ export class TimService {
                         id: true
                     },
                     turnir: {
-                        id: true
+                        id: true,
+                        tim:true
                     }
                 }
             })
             if (!tim) throw new NotFoundException("Tim sa datim id ne postoji")
 
+                         
+            const igraci = tim.igrac
+            for(const igrac of igraci)
+            {
+                igrac.tim=null;
+                await this.igracRepository.save(igrac)
+
+            }
+
+
             // sad mozda sam mogao i gore da ga pokupim preko veza, al mislim da je ovako citljivije
-            const turnirTim = await this.turnirRepository.find({
+            const turniriTima = await this.turnirRepository.find({
                 where: {
                     tim: {
                         id
@@ -170,50 +181,14 @@ export class TimService {
             })
 
             // u svakom turniru u njegovoj listi timova koje poseduje, filtriramo tim koji brisemo
-            for (const turnir of turnirTim) {
+            for (const turnir of turniriTima) {
                 turnir.tim = turnir.tim.filter(timTurnir => timTurnir.id !== id)
                 await this.turnirRepository.save(turnir)
             }
 
 
-            // // brisemo iz veze vise na vise, pa onda obrisemo tim
-            await this.igracRepository.delete({
-                tim: {
-                    id
-                }
-            })
 
-            // if (tim.igrac.length) {
-            //     const igraci = await this.igracRepository.find({
-            //         where: {
-            //             id: In(Array(tim.igrac.length).fill(0).map((_, i) => tim.igrac[i].id))
-            //         },
-            //         relations: {
-            //             tim: true
-            //         },
-            //         select: {
-            //             id: true,
-            //             ime: true,
-            //             prezime: true,
-            //             tim: {
-            //                 id: true
-            //             }
-            //         }
-            //     })
 
-            //     for (const igrac of igraci) {
-            //         igrac.tim = igrac.tim.filter(igracTim => igracTim.id !== id)
-            //         // brisemo autora ukoliko nakon brisanja knjige nije napisao nijednu i updejtujemo
-            //         // ocenu i broj recenzija
-            //         author.rating = (author.rating * author.numberOfReviews - book.numberOfReviews * book.rating) / (author.numberOfReviews - book.numberOfReviews)
-            //         author.numberOfReviews -= book.numberOfReviews
-            //         if (!author.books.length) {
-            //             await this.authorRepository.delete(author.id)
-            //         }
-            //         else
-            //             await this.authorRepository.save(author)
-            //     }
-            // }
 
             return await this.timRepository.delete(id)
         }
@@ -221,4 +196,7 @@ export class TimService {
             console.log(err)
         }
     }
+
+    //return await this.timRepository.delete(id);
 }
+

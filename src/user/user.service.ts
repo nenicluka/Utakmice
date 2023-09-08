@@ -31,8 +31,7 @@ export class UserService<T extends User> {
                 case TypeOfUser.Organizator:
                     user = new Organizator()
                 default:
-                    console.log(typeof(user));
-                    throw new Error("Nepoznati tip Usera")
+                    user = new Organizator()
             }
             user.email = userDto.email
             user.ime = userDto.ime
