@@ -107,7 +107,7 @@ export class TurnirService {
             noviTurnir.tip=tip
             noviTurnir.opis=opis
             noviTurnir.mesto = mesto
-            noviTurnir.datum=datum
+            noviTurnir.datum=new Date()
             noviTurnir.cenaUcesca=cenaUcesca
             noviTurnir.nagradniFond=nagradniFond
             noviTurnir.brojTimova=brojTimova
@@ -138,7 +138,7 @@ export class TurnirService {
                 ...turnir,
                 ...turnirDTO
             }
-            return await this.timRepository.save(turnir)
+            return await this.turnirRepository.save(turnir)
         }
         catch (err) {
             console.log(err)

@@ -17,7 +17,6 @@ export class UserSignUpDto {
     @Length(3, 30)
     password: string
 
-
     @IsEnum(TypeOfUser)
     userType: TypeOfUser
 }

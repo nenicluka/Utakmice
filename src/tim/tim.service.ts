@@ -169,14 +169,15 @@ export class TimService {
                 }
             })
 
-            // u svakom turniru u njegovoj listi timova koje poseduje, filtriramo turnir koji brisemo
+            // u svakom turniru u njegovoj listi timova koje poseduje, filtriramo tim koji brisemo
             for (const turnir of turnirTim) {
-                turnir.tim = turnir.tim.filter(turnirTim => turnirTim.id !== id)
+                turnir.tim = turnir.tim.filter(timTurnir => timTurnir.id !== id)
                 await this.turnirRepository.save(turnir)
             }
 
-            // // brisemo iz veze vise na vise, pa onda obrisemo knjigu
-            await this.turnirRepository.delete({
+
+            // // brisemo iz veze vise na vise, pa onda obrisemo tim
+            await this.igracRepository.delete({
                 tim: {
                     id
                 }

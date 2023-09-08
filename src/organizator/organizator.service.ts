@@ -7,7 +7,17 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrganizatorService extends UserService<Organizator>{
-    constructor(@InjectRepository(Organizator) private readonly organizatorRepository: Repository<Organizator>) {
+    constructor(@InjectRepository(Organizator) private readonly organizatorRepository: Repository<Organizator>){
+        //private readonly timService: TimService) {
         super(organizatorRepository);
+    }
+
+    async delete(id: number): Promise<void> {
+        try {
+            //await this.timService.deleteAllReviewsFromReader(id)
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 }

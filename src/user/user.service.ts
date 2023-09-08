@@ -7,6 +7,7 @@ import { Moderator } from 'src/entities/moderator.entity';
 import * as bcrypt from 'bcrypt'
 import { UserSignInDto, UserSignUpDto, UserUpdatePassDto } from "./DTOs";
 import { Organizator } from 'src/entities/organizator.entity';
+import { Type } from 'class-transformer';
 
 @Injectable()
 export class UserService<T extends User> {
@@ -30,6 +31,7 @@ export class UserService<T extends User> {
                 case TypeOfUser.Organizator:
                     user = new Organizator()
                 default:
+                    console.log(typeof(user));
                     throw new Error("Nepoznati tip Usera")
             }
             user.email = userDto.email
