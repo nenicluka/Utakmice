@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Igrac } from 'src/entities/igrac.entity';
 import { Tim } from 'src/entities/tim.entity';
 import { Turnir } from 'src/entities/turnir.entity';
-import { In, Not, Repository } from 'typeorm';
+import { In, Not, Repository, TreeLevelColumn } from 'typeorm';
 import { CreateTurnirDto, UpdateTurnirDto } from './DTOs';
 import { Organizator } from 'src/entities/organizator.entity';
 
@@ -153,38 +153,49 @@ export class TurnirService {
                     id
                 },
                 relations: {
-                    organizator: true,
-                    tim: true
+                    organizator:
+                    {
+                        turnir:true
+                    },
+                    tim:
+                    {
+                        turnir:true
+                    }
                 },
                 select: {
                     id: true,
                     naziv: true,
+                    tip:true,
+                    opis:true,
                     mesto: true,
+                    datum:true,
+                    cenaUcesca:true,
+                    nagradniFond:true,
+                    brojTimova:true,
                     organizator: {
                         id: true
                     },
                     tim: {
-                        id: true
+                        id: true,
+                        turnir:true
                     }
                 }
             })
             if (!turnir) throw new NotFoundException("Turnir sa datim id ne postoji")
 
-            // sad mozda sam mogao i gore da ga pokupim preko veza, al mislim da je ovako citljivije
-            const timTurniri = await this.timRepository.find({
-                where: {
-                    turnir: {
-                        id
-                    }
-                },
-                relations: {
-                    turnir: true
-                }
-            })
+            const organizatori: Organizator[] = turnir.organizator
 
-            // u svakom turniru u njegovoj listi timova koje poseduje, filtriramo turnir koji brisemo
-            for (const tim of timTurniri) {
-                tim.turnir = tim.turnir.filter(turnirTim => turnirTim.id !== id)
+            // u svakom zanru u njegovoj listi knjiga koje poseduje, filtriramo knjigu koju brisemo
+            for (const organizator of organizatori) {
+                organizator.turnir = organizator.turnir.filter((turnir: Turnir) => turnir.id !== id)
+                await this.organizatorRepository.save(organizator)
+            }
+
+            const timovi: Tim[] = turnir.tim
+
+            // u svakom zanru u njegovoj listi knjiga koje poseduje, filtriramo knjigu koju brisemo
+            for (const tim of timovi) {
+                tim.turnir = tim.turnir.filter((turnir: Turnir) => turnir.id !== id)
                 await this.timRepository.save(tim)
             }
 

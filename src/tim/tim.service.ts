@@ -140,7 +140,10 @@ export class TimService {
                 },
                 relations: {
                     igrac: true,
-                    turnir: true
+                    turnir: 
+                    {  tim:true
+                        
+                    }
                 },
                 select: {
                     id: true,
@@ -167,24 +170,33 @@ export class TimService {
 
             }
 
+            const turniri: Turnir[] = tim.turnir
 
-            // sad mozda sam mogao i gore da ga pokupim preko veza, al mislim da je ovako citljivije
-            const turniriTima = await this.turnirRepository.find({
-                where: {
-                    tim: {
-                        id
-                    }
-                },
-                relations: {
-                    tim: true
-                }
-            })
-
-            // u svakom turniru u njegovoj listi timova koje poseduje, filtriramo tim koji brisemo
-            for (const turnir of turniriTima) {
-                turnir.tim = turnir.tim.filter(timTurnir => timTurnir.id !== id)
+            // u svakom zanru u njegovoj listi knjiga koje poseduje, filtriramo knjigu koju brisemo
+            for (const turnir of turniri) {
+                turnir.tim = turnir.tim.filter((tim: Tim) => tim.id !== id)
                 await this.turnirRepository.save(turnir)
             }
+
+
+
+            // // sad mozda sam mogao i gore da ga pokupim preko veza, al mislim da je ovako citljivije
+            // const turniriTima = await this.turnirRepository.find({
+            //     where: {
+            //         tim: {
+            //             id
+            //         }
+            //     },
+            //     relations: {
+            //         tim: true
+            //     }
+            // })
+
+            // // u svakom turniru u njegovoj listi timova koje poseduje, filtriramo tim koji brisemo
+            // for (const turnir of turniriTima) {
+            //     turnir.tim = turnir.tim.filter(timTurnir => timTurnir.id !== id)
+            //     await this.turnirRepository.save(turnir)
+            // }
 
 
 
