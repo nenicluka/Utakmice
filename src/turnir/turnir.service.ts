@@ -4,7 +4,7 @@ import { Igrac } from 'src/entities/igrac.entity';
 import { Tim } from 'src/entities/tim.entity';
 import { Turnir } from 'src/entities/turnir.entity';
 import { In, Not, Repository, TreeLevelColumn } from 'typeorm';
-import { CreateTurnirDto, UpdateTurnirDto } from './DTOs';
+import { CreateTurnirDto, DodajTimNaTurnirDto, UpdateTurnirDto } from './DTOs';
 import { Organizator } from 'src/entities/organizator.entity';
 
 
@@ -205,6 +205,75 @@ export class TurnirService {
         }
         catch (err) {
             console.log(err)
+        }
+    }
+
+
+    async dodajTimNaTurnir(turnir: DodajTimNaTurnirDto) {
+        try {
+            const {id, timoviIDS} = turnir
+            const tim: Tim[] = await this.timRepository.find({
+                where: {
+                    id: In(timoviIDS)
+                },
+                relations: {
+                    turnir: true
+                }
+            })
+
+            if (!tim.length) throw new NotFoundException("Tim sa datim id ne postoji")
+
+            const noviTurnir = await this.turnirRepository.findOne({
+                where: {
+                    id
+                },
+                relations: {
+                    organizator:
+                    {
+                        turnir:true
+                    },
+                    tim:
+                    {
+                        turnir:true
+                    }
+                },
+                select: {
+                    id: true,
+                    naziv: true,
+                    tip:true,
+                    opis:true,
+                    mesto: true,
+                    datum:true,
+                    cenaUcesca:true,
+                    nagradniFond:true,
+                    brojTimova:true,
+                    organizator: {
+                        id: true
+                    },
+                    tim: {
+                        id: true,
+                        turnir:true
+                    }
+                }
+            })
+
+            //if (!turnir.length) throw new NotFoundException("Moras uneti pravi turnir za ovaj tim")
+            //const noviTurnir: Turnir = new Turnir()
+
+            noviTurnir.tim=tim
+
+
+            await this.turnirRepository.save(noviTurnir)
+ 
+            tim.forEach(tim => {
+                tim.turnir.push(noviTurnir)
+            })
+            await this.timRepository.save(tim)
+            await this.turnirRepository.save(noviTurnir)
+
+        }
+        catch (err) {
+            throw new Error(err)
         }
     }
 }
