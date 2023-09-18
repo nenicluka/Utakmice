@@ -1,7 +1,8 @@
-import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from 'src/entities/user.entity';
 import { UserSignUpDto, UserSignInDto, UserUpdatePassDto } from './DTOs';
+import { AuthGuard } from '@nestjs/passport';
 
 export class UserController<T extends User> {
     constructor(private readonly userService: UserService<T>) { }
@@ -16,6 +17,7 @@ export class UserController<T extends User> {
         return await this.userService.signup(userDto)
     }
 
+    //@UseGuards(AuthGuard('local'))
     @Post("/signin")
     async signin(@Body() userDto: UserSignInDto): Promise<T> {
         return await this.userService.signin(userDto)

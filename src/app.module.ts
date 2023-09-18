@@ -10,9 +10,10 @@ import { PrijavaModule } from './prijava/prijava.module';
 import { TimModule } from './tim/tim.module';
 import { TurnirModule } from './turnir/turnir.module';
 import { UserModule } from './user/user.module';
+import { User } from './entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), IgracModule, ModeratorModule, OrganizatorModule, PrijavaModule, TimModule, TurnirModule], //UserModule],
+  imports: [TypeOrmModule.forRoot(typeOrmConfig), IgracModule, ModeratorModule, OrganizatorModule, PrijavaModule, TimModule, TurnirModule, /*UserModule*/],
   controllers: [AppController],
   providers: [AppService],
 })
