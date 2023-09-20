@@ -10,8 +10,4 @@ export class OrganizatorController extends UserController<Organizator> {
         super(organizatorService)
     }
 
-    @Delete("/delete/:id")
-    async delete(@Param("id", ParseIntPipe) id: number) {
-        await this.organizatorService.delete(id)
-    }
 }

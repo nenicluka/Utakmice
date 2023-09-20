@@ -55,6 +55,8 @@ export class TimService {
         }
     }
 
+
+
     async getAll(): Promise<Tim[]> {
         try {
             return await this.timRepository.find({
@@ -94,7 +96,7 @@ export class TimService {
                 }
             })
             if (!igrac.length) throw new NotFoundException("Igraci sa datim id ne postoji")
-            //if (!turnir.length) throw new NotFoundException("Moras uneti pravi turnir za ovaj tim")
+
             const noviTim: Tim = new Tim()
             noviTim.naziv = naziv
             noviTim.mesto = mesto
@@ -172,31 +174,11 @@ export class TimService {
 
             const turniri: Turnir[] = tim.turnir
 
-            // u svakom zanru u njegovoj listi knjiga koje poseduje, filtriramo knjigu koju brisemo
+
             for (const turnir of turniri) {
                 turnir.tim = turnir.tim.filter((tim: Tim) => tim.id !== id)
                 await this.turnirRepository.save(turnir)
             }
-
-
-
-            // // sad mozda sam mogao i gore da ga pokupim preko veza, al mislim da je ovako citljivije
-            // const turniriTima = await this.turnirRepository.find({
-            //     where: {
-            //         tim: {
-            //             id
-            //         }
-            //     },
-            //     relations: {
-            //         tim: true
-            //     }
-            // })
-
-            // // u svakom turniru u njegovoj listi timova koje poseduje, filtriramo tim koji brisemo
-            // for (const turnir of turniriTima) {
-            //     turnir.tim = turnir.tim.filter(timTurnir => timTurnir.id !== id)
-            //     await this.turnirRepository.save(turnir)
-            // }
 
 
 
@@ -209,6 +191,6 @@ export class TimService {
         }
     }
 
-    //return await this.timRepository.delete(id);
+
 }
 

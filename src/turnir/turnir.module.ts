@@ -6,10 +6,10 @@ import { Igrac } from 'src/entities/igrac.entity';
 import { Turnir } from 'src/entities/turnir.entity';
 import { Organizator } from 'src/entities/organizator.entity';
 import { Tim } from 'src/entities/tim.entity';
-import { Prijava } from 'src/entities/prijava.entity';
+
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tim,Igrac,Prijava,Turnir,Organizator])],
+  imports: [TypeOrmModule.forFeature([Tim,Igrac,Turnir,Organizator])],
   controllers: [TurnirController],
   providers: [TurnirService],
   exports: [TurnirService]

@@ -19,6 +19,7 @@ export class TimController {
         return await this.timService.getAll()
     }
 
+
     @Post("/create")
     async create(@Body() tim: CreateTimDto) {
         return await this.timService.create(tim)

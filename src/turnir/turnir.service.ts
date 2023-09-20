@@ -101,7 +101,7 @@ export class TurnirService {
                 }
             })
             if (!tim.length) throw new NotFoundException("Tim sa datim id ne postoji")
-            //if (!turnir.length) throw new NotFoundException("Moras uneti pravi turnir za ovaj tim")
+
             const noviTurnir: Turnir = new Turnir()
             noviTurnir.naziv = naziv
             noviTurnir.tip=tip
@@ -185,7 +185,7 @@ export class TurnirService {
 
             const organizatori: Organizator[] = turnir.organizator
 
-            // u svakom zanru u njegovoj listi knjiga koje poseduje, filtriramo knjigu koju brisemo
+            
             for (const organizator of organizatori) {
                 organizator.turnir = organizator.turnir.filter((turnir: Turnir) => turnir.id !== id)
                 await this.organizatorRepository.save(organizator)
@@ -193,7 +193,7 @@ export class TurnirService {
 
             const timovi: Tim[] = turnir.tim
 
-            // u svakom zanru u njegovoj listi knjiga koje poseduje, filtriramo knjigu koju brisemo
+            
             for (const tim of timovi) {
                 tim.turnir = tim.turnir.filter((turnir: Turnir) => turnir.id !== id)
                 await this.timRepository.save(tim)
@@ -257,8 +257,7 @@ export class TurnirService {
                 }
             })
 
-            //if (!turnir.length) throw new NotFoundException("Moras uneti pravi turnir za ovaj tim")
-            //const noviTurnir: Turnir = new Turnir()
+
 
             noviTurnir.tim=tim
 

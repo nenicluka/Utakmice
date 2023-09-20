@@ -8,16 +8,19 @@ import * as bcrypt from 'bcrypt'
 import { UserSignInDto, UserSignUpDto, UserUpdatePassDto } from "./DTOs";
 import { Organizator } from 'src/entities/organizator.entity';
 import { Type } from 'class-transformer';
+import { JwtService } from '@nestjs/jwt';
+import { Tokens } from './types';
 
 @Injectable()
 export class UserService<T extends User> {
-    constructor(private readonly repository: Repository<T>) { }
+    constructor(private readonly repository: Repository<T>
+        /*,protected jwtService:JwtService*/)
+    { }
 
     async getAll(): Promise<T[]> {
         return await this.repository.find() as T[]
     }
 
-    // samo me zanima kako ce ovaj duplikat za email da se obradi
     async signup(userDto: UserSignUpDto): Promise<T> {
         try {
             let user: User
@@ -37,7 +40,9 @@ export class UserService<T extends User> {
             user.ime = userDto.ime
             user.prezime = userDto.prezime
             user.password = await bcrypt.hash(userDto.password, 10)
-            return await this.repository.save(user as T)
+            return this.repository.save(user as T)
+            //const tokens = await this.getTokens(user.id,user.email)
+            //return tokens
         }
         catch (err) {
             console.log(err)
@@ -79,29 +84,42 @@ export class UserService<T extends User> {
         }
     }
 
-    // async delete(email: string): Promise<void> {
-    //     try {
-    //         const user: T = await this.repository.findOne({
-    //             where: {
-    //                 email
-    //             }
-    //         } as FindOneOptions<T>)
-    //         if (!user) throw new Error("User doesn't exist")
-    //         await this.repository.delete(user.id)
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //     }
-    // }
+    /*async getTokens(userId:number,email:string):Promise<Tokens>
+    {
+        const[at,rt]=await Promise.all(([
+           this.jwtService.signAsync
+           
+           ({
+          
+                sub:userId,
+                email,
+        
+               },
+               {
+                secret:'at-secret',
+                expiresIn:60*15*25
+            }),
 
-    async deleteAll(): Promise<void> {
-        try {
-            await this.repository.delete({
-                id: MoreThan(0),
-            } as FindOptionsWhere<T>);
+            this.jwtService.signAsync
+           
+            ({
+           
+                 sub:userId,
+                 email,
+         
+                },
+                {
+                 secret:'rt-secret',
+                 expiresIn:60*60*24*7
+             })
+        ]))
+
+        return{
+            access_token:at,
+            refresh_token:rt
         }
-        catch (err) {
-            console.log(err)
-        }
-    }
+    }*/
+    
+
+
 }

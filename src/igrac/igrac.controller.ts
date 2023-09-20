@@ -13,4 +13,9 @@ export class IgracController extends UserController<Igrac>{
     async delete(@Param("id", ParseIntPipe) id: number) {
         await this.igracService.delete(id)
     }
+
+    @Get("/getAll")
+    async getAll() {
+        return await this.igracService.getAll()
+    }
 }
