@@ -10,6 +10,6 @@ export class ModeratorService extends UserService<Moderator>{
     constructor(@InjectRepository(Moderator) private readonly moderatorRepository: Repository<Moderator>
     /*,protected jwtService:JwtService*/
     ) {
-        super(moderatorRepository/*,jwtService*/)
+        super(moderatorRepository,/*jwtService*/)
     }
 }

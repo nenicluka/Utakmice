@@ -43,6 +43,7 @@ export class UserService<T extends User> {
             return this.repository.save(user as T)
             //const tokens = await this.getTokens(user.id,user.email)
             //return tokens
+
         }
         catch (err) {
             console.log(err)
@@ -82,6 +83,11 @@ export class UserService<T extends User> {
         catch (err) {
             console.log(err)
         }
+    }
+
+    async logout(userId:number)
+    {
+        
     }
 
     /*async getTokens(userId:number,email:string):Promise<Tokens>

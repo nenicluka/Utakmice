@@ -12,10 +12,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AtStrategy, RtStrategy } from './strategies';
 
 @Module({
-  imports: [PassportModule, TypeOrmModule.forFeature([User]), JwtModule.register({
-    secret: `${process.env.JSON_TOKEN_KEY}`,
-    signOptions: {expiresIn: '6000s'}
-})  ],
+  imports: [PassportModule, TypeOrmModule.forFeature([User]), JwtModule.register({})  ],
 providers: [UserService,Repository,AtStrategy,RtStrategy ],
 controllers: [UserController],
 exports: [UserService]
