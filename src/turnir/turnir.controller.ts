@@ -4,12 +4,14 @@ import { CreateTurnirDto } from './DTOs/CreateTurnirDto';
 import { UpdateTurnirDto } from './DTOs/UpdateTurnirDto';
 import { Turnir } from 'src/entities/turnir.entity';
 import { DodajTimNaTurnirDto } from './DTOs';
-
+import { Roles } from 'src/custom/decorators';
+import { Role } from 'src/models/enums';
 
 @Controller('turnir')
 export class TurnirController {
     constructor(private readonly turnirService: TurnirService) { }
 
+    
     @Get("/get/:id")
     async get(@Param("id", ParseIntPipe) id: number) {
         return await this.turnirService.get(id)
@@ -20,6 +22,7 @@ export class TurnirController {
         return await this.turnirService.getAll()
     }
 
+    @Roles(Role.Organizator)
     @Post("/create")
     async create(@Body() turnir: CreateTurnirDto) {
         return await this.turnirService.create(turnir)
@@ -30,12 +33,13 @@ export class TurnirController {
         return await this.turnirService.dodajTimNaTurnir(turnir)
     }
 
+    @Roles(Role.Moderator,Role.Organizator)    
     @Put("/update/:id")
     async update(@Param("id", ParseIntPipe) id: number, @Body() turnirDto: UpdateTurnirDto): Promise<Turnir> {
         return await this.turnirService.update(id, turnirDto)
     }
 
-
+    @Roles(Role.Moderator)
     @Delete("/delete/:id")
     async delete(@Param("id", ParseIntPipe) id: number) {
         return await this.turnirService.delete(id)

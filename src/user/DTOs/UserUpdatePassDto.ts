@@ -5,10 +5,10 @@ export class UserUpdatePassDto {
     email: string
 
     @IsString()
-    @Length(3, 20)
+    @Length(3, 30)
     oldPassword: string
 
     @IsString()
-    @Length(3, 20)
+    @Length(3, 30)
     newPassword: string
 }

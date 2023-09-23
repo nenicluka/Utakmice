@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsString, Length } from "class-validator"
-import { TypeOfUser } from "src/enums"
+import { Role } from "src/models/enums"
 
 export class UserSignUpDto {
     @IsString()
@@ -17,6 +17,6 @@ export class UserSignUpDto {
     @Length(3, 30)
     password: string
 
-    @IsEnum(TypeOfUser)
-    userType: TypeOfUser
+    @IsEnum(Role)
+    role: Role
 }

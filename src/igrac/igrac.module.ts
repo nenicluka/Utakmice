@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Igrac } from 'src/entities/igrac.entity';
 import { User } from 'src/entities/user.entity';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { AuthModule } from 'src/user/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Igrac, User]),JwtModule],
+  imports: [AuthModule,TypeOrmModule.forFeature([Igrac, User]),JwtModule],
   controllers: [IgracController],
   providers: [IgracService]
 })

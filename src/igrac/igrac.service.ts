@@ -3,15 +3,14 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Igrac } from 'src/entities/igrac.entity';
 import { TimService } from 'src/tim/tim.service';
-import { UserService } from 'src/user/user.service';
+import { AuthService } from 'src/user/auth.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class IgracService extends UserService<Igrac>{
-    constructor(@InjectRepository(Igrac) private readonly igracRepository: Repository<Igrac>
-    /*,protected jwtService:JwtService*/)
+export class IgracService extends AuthService<Igrac>{
+    constructor(@InjectRepository(Igrac) private readonly igracRepository: Repository<Igrac>)
     {
-        super(igracRepository/*,jwtService*/);
+        super(igracRepository);
     }
 
     async delete(id: number): Promise<void> {

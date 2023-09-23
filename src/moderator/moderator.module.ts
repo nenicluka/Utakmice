@@ -5,9 +5,10 @@ import { User } from 'src/entities/user.entity';
 import { ModeratorService } from './moderator.service';
 import { ModeratorController } from './moderator.controller';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { AuthModule } from 'src/user/auth.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Moderator]), TypeOrmModule.forFeature([User]),JwtModule],
+    imports: [AuthModule,TypeOrmModule.forFeature([Moderator]), TypeOrmModule.forFeature([User]),JwtModule],
     providers: [ModeratorService],
     controllers: [ModeratorController]
 })

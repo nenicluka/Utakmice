@@ -1,7 +1,7 @@
-enum TypeOfUser {
+enum Role {
     Igrac = "IGRAC",
     Moderator = "MODERATOR",
     Organizator ="ORGANIZATOR"
 }
 
-export default TypeOfUser
+export default Role

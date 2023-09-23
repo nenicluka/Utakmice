@@ -1,4 +1,5 @@
-import { IsEmail, IsString, Length } from "class-validator";
+import { IsEmail, IsEnum, IsString, Length } from "class-validator";
+import { Role } from "src/models/enums";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity()
@@ -25,4 +26,11 @@ export abstract class User {
     @IsString()
     @Length(3, 30)
     password: string
+
+    @Column()
+    @IsEnum(Role)
+    role: Role
+
+    @Column({ nullable: true })
+    hashedRt: string | null
 }

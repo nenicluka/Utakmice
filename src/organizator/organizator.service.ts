@@ -3,15 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Moderator } from 'src/entities/moderator.entity';
 import { Organizator } from 'src/entities/organizator.entity';
-import { UserService } from 'src/user/user.service';
+import { AuthService} from 'src/user/auth.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class OrganizatorService extends UserService<Organizator>{
-    constructor(@InjectRepository(Organizator) private readonly organizatorRepository: Repository<Organizator>
-    /*,protected jwtService:JwtService*/){
-        
-        super(organizatorRepository,/*jwtService*/);
+export class OrganizatorService extends AuthService<Organizator>{
+    constructor(@InjectRepository(Organizator) private readonly organizatorRepository: Repository<Organizator>) {
+        super(organizatorRepository)
     }
-
 }
