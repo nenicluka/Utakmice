@@ -211,10 +211,12 @@ export class TurnirService {
 
     async dodajTimNaTurnir(turnir: DodajTimNaTurnirDto) {
         try {
+            
             const {id, timoviIDS} = turnir
             const tim: Tim[] = await this.timRepository.find({
                 where: {
                     id: In(timoviIDS)
+                    
                 },
                 relations: {
                     turnir: true
@@ -259,7 +261,7 @@ export class TurnirService {
 
 
 
-            noviTurnir.tim=tim
+            noviTurnir.tim=[...noviTurnir.tim, ...tim]
 
 
             await this.turnirRepository.save(noviTurnir)

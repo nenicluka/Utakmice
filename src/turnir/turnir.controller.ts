@@ -4,30 +4,32 @@ import { CreateTurnirDto } from './DTOs/CreateTurnirDto';
 import { UpdateTurnirDto } from './DTOs/UpdateTurnirDto';
 import { Turnir } from 'src/entities/turnir.entity';
 import { DodajTimNaTurnirDto } from './DTOs';
-import { Roles } from 'src/custom/decorators';
+import { Public, Roles } from 'src/custom/decorators';
 import { Role } from 'src/models/enums';
 
 @Controller('turnir')
 export class TurnirController {
     constructor(private readonly turnirService: TurnirService) { }
 
-    
+    @Public()
     @Get("/get/:id")
     async get(@Param("id", ParseIntPipe) id: number) {
         return await this.turnirService.get(id)
     }
 
+    @Public()
     @Get("/getAll")
     async getAll() {
         return await this.turnirService.getAll()
     }
 
-    @Roles(Role.Organizator)
+    @Public()
     @Post("/create")
     async create(@Body() turnir: CreateTurnirDto) {
         return await this.turnirService.create(turnir)
     }
 
+    @Public()
     @Post("/dodaj")
     async dodajTimNaTurnir(@Body() turnir: DodajTimNaTurnirDto) {
         return await this.turnirService.dodajTimNaTurnir(turnir)

@@ -3,7 +3,7 @@ import { TimService } from './tim.service';
 import { CreateTimDto } from './DTOs/CreateTimDto';
 import { UpdateTimDto } from './DTOs/UpdateTimDto';
 import { Tim } from 'src/entities/tim.entity';
-import { Roles } from 'src/custom/decorators';
+import { Public, Roles } from 'src/custom/decorators';
 import { Role } from 'src/models/enums';
 
 
@@ -11,13 +11,13 @@ import { Role } from 'src/models/enums';
 export class TimController {
     constructor(private readonly timService: TimService) { }
 
-    @Roles(Role.Igrac,Role.Moderator)
+    @Public()
     @Get("/get/:id")
     async get(@Param("id", ParseIntPipe) id: number) {
         return await this.timService.get(id)
     }
 
-    @Roles(Role.Igrac,Role.Moderator)
+    @Public()
     @Get("/getAll")
     async getAll() {
         return await this.timService.getAll()
