@@ -3,7 +3,7 @@ import { AuthControler} from 'src/user/auth.controller';
 import { IgracService } from './igrac.service';
 import { Igrac } from 'src/entities/igrac.entity';
 import { Role } from 'src/models/enums';
-import { Roles } from 'src/custom/decorators';
+import { Public, Roles } from 'src/custom/decorators';
 
 @Controller('igrac')
 export class IgracController extends AuthControler<Igrac>{
@@ -19,6 +19,7 @@ export class IgracController extends AuthControler<Igrac>{
         await this.igracService.delete(id)
     }
 
+    @Public()
     @Get("/getAll")
     async getAll() {
         return await this.igracService.getAll()
