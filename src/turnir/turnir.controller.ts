@@ -41,7 +41,8 @@ export class TurnirController {
         return await this.turnirService.update(id, turnirDto)
     }
 
-    @Roles(Role.Moderator)
+    //@Roles(Role.Moderator)
+    @Public()
     @Delete("/delete/:id")
     async delete(@Param("id", ParseIntPipe) id: number) {
         return await this.turnirService.delete(id)

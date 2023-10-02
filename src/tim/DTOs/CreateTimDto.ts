@@ -15,7 +15,7 @@ export class CreateTimDto {
     @IsInt({ each: true })
     igraciIds: number[]
 
-    @IsString({ each: true })
-    naziviTurnira: string[]    
+    @IsInt({ each: true })
+    naziviTurnira: number[]    
 }
 

@@ -1,9 +1,10 @@
 import { User } from "src/entities/user.entity";
 import { AuthService } from "./auth.service";
-import { Body, Controller, Param, ParseIntPipe, Post } from "@nestjs/common";
+import { Body, Controller, Param, ParseIntPipe, Post, Put, Get } from "@nestjs/common";
 import { UserUpdatePassDto, UserSignInDto, UserSignUpDto } from "./DTOs";
 import { Tokens } from "src/models/types";
-import { GetCurrentUserId, Public } from "src/custom/decorators";
+import { GetCurrentUserId, Public, Roles } from "src/custom/decorators";
+import { Role } from "src/models/enums";
 
 @Controller()
 export class AuthControler<T extends User>{
@@ -26,14 +27,14 @@ export class AuthControler<T extends User>{
         return await this.authService.logout(userId)
     }
 
-    @Post("/updatePassword")
-    async updatePassword(@Body() credentials: UserUpdatePassDto): Promise<T> {
-        return await this.updatePassword(credentials)
+    @Put("/updatePassword")
+    async updatePassword(@Body() credentials: UserUpdatePassDto): Promise<UserUpdatePassDto> {
+        return await this.authService.updatePassword(credentials)
     }
 
-    @Public()
-    @Post("/refresh")
-    async refreshTokens(@GetCurrentUserId() userId: number): Promise<Tokens> {
-        return await this.refreshTokens(userId)
+    @Roles(Role.Moderator, Role.Igrac,Role.Organizator)
+    @Get("/getUserId/:accessToken")
+    async getUserId(@Param("accessToken") accessToken: string): Promise<number> {
+        return await this.authService.getUserIdFromAccessToken(accessToken)
     }
 }

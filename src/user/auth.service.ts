@@ -81,7 +81,7 @@ export class AuthService<T extends User> {
     }
     
 
-    async updatePassword({ email, oldPassword, newPassword }: UserUpdatePassDto): Promise<T> {
+    async updatePassword({ email, oldPassword, newPassword }: UserUpdatePassDto): Promise<UserUpdatePassDto> {
         try {
             const user: T = await this.repository.findOneBy({
                 email
@@ -97,7 +97,8 @@ export class AuthService<T extends User> {
             }
 
             user.password = await bcrypt.hash(newPassword, 10)
-            return await this.repository.save(user)
+            await this.repository.save(user)
+            return({email,oldPassword,newPassword})
         }
         catch (err) {
             throw new Error(err)
@@ -157,6 +158,20 @@ export class AuthService<T extends User> {
         return {
             access_token: at,
             refresh_token: rt
+        }
+    }
+
+    async getUserIdFromAccessToken(accessToken: string): Promise<number> {
+        try {
+            const splitToken: string[] = accessToken.split(".")
+            if (splitToken.length !== 3) throw new Error("Ivalid token!")
+
+            const payload: JwtPayload = JSON.parse(atob(splitToken[1]));
+
+            return payload.sub
+        }
+        catch (err) {
+            throw new Error(err)
         }
     }
 }

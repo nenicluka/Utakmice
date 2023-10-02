@@ -10,6 +10,7 @@ export class AtGuard extends AuthGuard("jwt") {
         super();
     }
 
+    //can avtivate se okine pre nego sto ti dopusti da udjes na rutu
     canActivate(context: ExecutionContext) {
         const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
             context.getHandler(),

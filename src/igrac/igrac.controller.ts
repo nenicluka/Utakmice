@@ -11,9 +11,7 @@ export class IgracController extends AuthControler<Igrac>{
         super(igracService)
     }
 
-    @Roles(Role.Moderator, Role.Igrac,Role.Organizator)
-
-
+    @Roles(Role.Moderator)
     @Delete("/delete/:id")
     async delete(@Param("id", ParseIntPipe) id: number) {
         await this.igracService.delete(id)

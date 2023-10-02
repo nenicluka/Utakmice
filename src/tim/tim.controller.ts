@@ -36,6 +36,7 @@ export class TimController {
         return await this.timService.update(id, timDto)
     }
 
+    //@Public()
     @Roles(Role.Moderator)
     @Delete("/delete/:id")
     async delete(@Param("id", ParseIntPipe) id: number) {
